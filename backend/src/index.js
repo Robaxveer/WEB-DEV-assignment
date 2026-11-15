@@ -3,30 +3,31 @@ import connectDB from "./config/database.js";
 import app from "./app.js";
 
 dotenv.config({
-    path: "./.env"
+    path: './.env'
 });
 
-const PORT = process.env.PORT || 4000;
 
 const startServer = async () => {
-    try {
-        console.log("Connecting to MongoDB Atlas...");
-        await connectDB();
+  try {
+           console.log("MONGODB_URI:", process.env.MONGODB_URI);
+           await connectDB();
 
-        app.on("error", (error) => {
-            console.error("Express Application Error:", error);
-            throw error;
-        });
+        app.on("error", (error) => {    // to check if there are any errors 
+        console.log("ERROR", error);
+        throw error;
+    });
 
-        app.listen(PORT, () => {
-            console.log(`\n🚀 Server is running at port: ${PORT}`);
-            console.log(`📡 Local URL: http://localhost:${PORT}`);
-        });
-    } catch (err) {
-        console.error("❌ MongoDB connection failed:", err.message);
-        console.error("⚠️  Tip: Ensure your current IP is whitelisted in MongoDB Atlas Network Access!");
-    }
-};
+
+    app.listen(process.env.PORT || 8000, () => {   // app will listen
+        console.log(` Server is running at port :     
+            ${process.env.PORT}`);                 
+
+    });
+} catch (err) {
+    console.log("MONGO db connection failed !!! ", err);
+    
+}
+}
 
 startServer();
 

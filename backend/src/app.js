@@ -1,26 +1,18 @@
 import express from "express";
-import userRouter from "./routes/user.route.js";
-import postRouter from "./routes/post.route.js";
 
-const app = express();
+const app = express();  // create an express app
 
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
 
-// Health-check / root route
-app.get("/", (req, res) => {
-    res.status(200).json({
-        message: "API server is up and running!",
-        routes: {
-            users: "/api/v1/users",
-            posts: "/api/v1/posts"
-        }
-    });
-});
+// routes import
+import userRouter from './routes/user.route.js'; 
+import postRouter from './routes/post.route.js';
+
 
 // routes declaration
 app.use("/api/v1/users", userRouter);
-app.use("/api/v1/posts", postRouter);
+app.use("/api/v1/posts", postRouter)
+
+// example route: http://localhost:4000/api/v1/users/register
 
 export default app;
-

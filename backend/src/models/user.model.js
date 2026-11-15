@@ -10,7 +10,7 @@ const userSchema = new Schema(
             lowercase: true,
             trim: true,
             minLength: 1,
-            maxLength: 30
+            maxLength: 30         
         },
 
         password: {
@@ -27,23 +27,25 @@ const userSchema = new Schema(
             lowercase: true,
             trim: true
         }
+        
     },
+
     {
         timestamps: true
     }
-);
+)
 
-// Before saving any password we need to hash it
+// before saving any password we need to hash it
 userSchema.pre("save", async function (next) {
     if (!this.isModified("password")) return next();
     this.password = await bcrypt.hash(this.password, 10);
+
     next();
 });
 
-// Method to compare candidate password with stored hash
-userSchema.methods.comparePassword = async function (candidatePassword) {
-    return await bcrypt.compare(candidatePassword, this.password);
-};
+// compare passwords
+userSchema.methods.comparePassword = async function (password) {
+    return await bcrypt.compare(password, this.password)
+}
 
-export const User = mongoose.model("User", userSchema);
-
+export const User = mongoose.model("User", userSchema)
