@@ -1,0 +1,195 @@
+{
+  "info": {
+    "_postman_id": "a5d8b72e-33f6-4a92-9c12-3f8d9b1a0e10",
+    "name": "Backend Tutorial API - FreeCodeCamp Assignment",
+    "description": "Postman API Collection for testing the Node.js + Express + MongoDB backend project.\nCovers User Authentication and full Post CRUD operations.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:4000",
+      "type": "string"
+    },
+    {
+      "key": "postId",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "1. User Authentication",
+      "description": "Endpoints for user registration, authentication, and logout.",
+      "item": [
+        {
+          "name": "Register User",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"veertambi\",\n  \"email\": \"veertambi@example.com\",\n  \"password\": \"password123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/users/register",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "users", "register"]
+            },
+            "description": "Registers a new user and hashes their password with bcrypt."
+          },
+          "response": []
+        },
+        {
+          "name": "Login User",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"veertambi@example.com\",\n  \"password\": \"password123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/users/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "users", "login"]
+            },
+            "description": "Authenticates a user by checking email and comparing password hash."
+          },
+          "response": []
+        },
+        {
+          "name": "Logout User",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"veertambi@example.com\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/users/logout",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "users", "logout"]
+            },
+            "description": "Logs out an active user."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "2. Posts (CRUD Operations)",
+      "description": "Endpoints to Create, Read, Update, and Delete posts in MongoDB.",
+      "item": [
+        {
+          "name": "Create Post (CREATE)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "// Auto-save the created post's ID to collection variable postId",
+                  "if (pm.response.code === 201) {",
+                  "    var json = pm.response.json();",
+                  "    if (json.post && json.post._id) {",
+                  "        pm.collectionVariables.set('postId', json.post._id);",
+                  "        console.log('Saved postId: ' + json.post._id);",
+                  "    }",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Getting Started with Backend Dev\",\n  \"description\": \"Building Node.js and Express REST APIs with MongoDB\",\n  \"age\": 20\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/posts/create",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "posts", "create"]
+            },
+            "description": "Creates a new post document in MongoDB."
+          },
+          "response": []
+        },
+        {
+          "name": "Get All Posts (READ)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/posts/getPosts",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "posts", "getPosts"]
+            },
+            "description": "Fetches all post documents from MongoDB."
+          },
+          "response": []
+        },
+        {
+          "name": "Update Post by ID (UPDATE)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Mastering Backend APIs\",\n  \"description\": \"Updated tutorial post with Express and MongoDB!\",\n  \"age\": 21\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/posts/update/{{postId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "posts", "update", "{{postId}}"]
+            },
+            "description": "Updates fields of an existing post using its MongoDB ID."
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Post by ID (DELETE)",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/posts/delete/{{postId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "posts", "delete", "{{postId}}"]
+            },
+            "description": "Deletes a post document from MongoDB by its ID."
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}
