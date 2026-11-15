@@ -116,3 +116,4 @@ When connected successfully, you will see:
 | `GET` | `/api/v1/posts/getPosts` | **Read** all posts | *None* |
 | `PATCH` | `/api/v1/posts/update/:id` | **Update** post by ID | `{ "name": "Updated Title", "description": "Updated info", "age": 22 }` |
 | `DELETE` | `/api/v1/posts/delete/:id` | **Delete** post by ID | *None (Pass `:id` in URL)* |
+

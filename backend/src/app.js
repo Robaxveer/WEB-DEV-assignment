@@ -23,3 +23,4 @@ app.use("/api/v1/users", userRouter);
 app.use("/api/v1/posts", postRouter);
 
 export default app;
+
